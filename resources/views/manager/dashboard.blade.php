@@ -10,7 +10,7 @@
 <div class="mb-8 bg-white p-5 rounded-xl shadow">
 
     <h3 class="text-xl font-semibold mb-4">
-        {{ $terrain->name }} ({{ $terrain->adress }})
+        {{ $terrain->name }} ({{ $terrain->location }})
     </h3>
 
     <table class="w-full text-left">
@@ -32,7 +32,7 @@
 
         <tr class="border-b">
 
-            <td>{{ $res->user_id }}</td>
+            <td>{{ $res->user->name }}</td>
 
             <td>{{ $res->date }}</td>
 
