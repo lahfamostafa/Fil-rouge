@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name'); 
-            $table->string('adress'); 
+            $table->string('location'); 
 
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);

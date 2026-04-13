@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Terrain;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TerrainController extends Controller
 {
@@ -12,7 +13,13 @@ class TerrainController extends Controller
      */
     public function index()
     {
-        $terrains = Terrain::where('is_active', true)->get();
+        $user = Auth::user();
+
+        if ($user->role == 'manager') {
+            $terrains = Terrain::where('manager_id', $user->id)->get();
+        } else {
+            $terrains = Terrain::where('is_active', true)->get();
+        }
 
         return view('terrains.index', compact('terrains'));
     }
@@ -30,7 +37,37 @@ class TerrainController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'location' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'price' => 'required|numeric',
+            'opening_time' => 'required',
+            'closing_time' => 'required',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        ]);
+
+        $imagePath = null;
+
+        // 📸 Upload image
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('terrains', 'public');
+        }
+
+        Terrain::create([
+            'name' => $request->name,
+            'location' => $request->location,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'price' => $request->price,
+            'opening_time' => $request->opening_time,
+            'closing_time' => $request->closing_time,
+            'image' => $imagePath,
+            'manager_id' => Auth::id(),
+        ]);
+
+        return back()->with('success', 'Terrain ajouté avec succès');
     }
 
     /**
@@ -60,8 +97,14 @@ class TerrainController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Terrain $terrain)
+    public function destroy($id)
     {
-        //
+        $terrain = Terrain::where('id', $id)
+            ->where('manager_id', Auth::id())
+            ->firstOrFail();
+
+        $terrain->delete();
+
+        return back()->with('success', 'Terrain supprimé');
     }
 }
