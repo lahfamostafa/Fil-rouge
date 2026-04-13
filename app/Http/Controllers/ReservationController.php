@@ -43,18 +43,14 @@ class ReservationController extends Controller
 
             $booked = Reservation::where('terrain_id', $terrain->id)
                 ->where('date', $date)
+                ->whereIn('status', ['pending', 'confirmed'])
                 ->get();
 
             foreach ($slots as $slot) {
 
-                $isBooked = false;
-
-                foreach ($booked as $res) {
-                    if (substr($res->start_time, 0, 5) == $slot) {
-                        $isBooked = true;
-                        break;
-                    }
-                }
+                $isBooked = $booked->contains(function ($res) use ($slot) {
+                    return substr($res->start_time, 0, 5) == $slot;
+                });
 
                 if (!$isBooked) {
                     $availableSlots[] = $slot;
@@ -89,6 +85,7 @@ class ReservationController extends Controller
 
         $exists = Reservation::where('terrain_id', $terrain->id)
             ->where('date', $request->date)
+            ->whereIn('status', ['pending', 'confirmed']) 
             ->where(function ($query) use ($start_time, $end_time) {
                 $query->where('start_time', '<', $end_time)
                     ->where('end_time', '>', $start_time);
@@ -119,9 +116,22 @@ class ReservationController extends Controller
 
     public function myReservations(Request $request)
     {
-        $query = Reservation::with('terrain')
-            ->where('user_id', Auth::id());
+        $user = Auth::user();
 
+        if ($user->role == 'manager') {
+
+            $query = Reservation::with('terrain')
+                ->whereHas('terrain', function ($q) use ($user) {
+                    $q->where('manager_id', $user->id);
+                });
+
+        } else {
+
+            $query = Reservation::with('terrain')
+                ->where('user_id', $user->id);
+        }
+
+        // 🔍 filters
         if ($request->filter == 'past') {
             $query->where('date', '<', now()->toDateString());
         }
@@ -136,6 +146,7 @@ class ReservationController extends Controller
 
         $reservations = $query->orderBy('date', 'desc')->get();
 
+        if($user->role == 'manager') return view('reservations.my', compact('reservations'));
         return view('reservations.my', compact('reservations'));
     }
 
