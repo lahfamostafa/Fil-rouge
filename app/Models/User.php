@@ -46,4 +46,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function terrains()
+    {
+        return $this->hasMany(Terrain::class, 'manager_id');
+    }
 }
