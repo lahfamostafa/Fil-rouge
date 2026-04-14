@@ -2,18 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
-        'user_id',
-        'terrain_id',
         'date',
         'start_time',
         'end_time',
-        'total_price',
-        'status'
+    ];
+
+    protected $casts = [
+        'date' => 'date',
+        'start_time' => 'datetime:H:i',
+        'end_time' => 'datetime:H:i',
+        'total_price' => 'float',
     ];
 
     public function user()

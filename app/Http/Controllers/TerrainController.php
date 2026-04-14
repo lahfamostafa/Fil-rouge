@@ -37,6 +37,9 @@ class TerrainController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->user()->role !== 'manager') {
+            abort(403);
+        }
         $request->validate([
             'name' => 'required|string',
             'location' => 'required|string',
@@ -50,22 +53,23 @@ class TerrainController extends Controller
 
         $imagePath = null;
 
-        // 📸 Upload image
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('terrains', 'public');
         }
 
-        Terrain::create([
-            'name' => $request->name,
-            'location' => $request->location,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'price' => $request->price,
-            'opening_time' => $request->opening_time,
-            'closing_time' => $request->closing_time,
-            'image' => $imagePath,
-            'manager_id' => Auth::id(),
-        ]);
+        $terrain = new Terrain();
+
+        $terrain->name = $request->name;
+        $terrain->location = $request->location;
+        $terrain->latitude = $request->latitude;
+        $terrain->longitude = $request->longitude;
+        $terrain->price = $request->price;
+        $terrain->opening_time = $request->opening_time;
+        $terrain->closing_time = $request->closing_time;
+        $terrain->image = $imagePath;
+        $terrain->manager_id = Auth::id(); // هنا آمنة
+
+        $terrain->save();
 
         return back()->with('success', 'Terrain ajouté avec succès');
     }

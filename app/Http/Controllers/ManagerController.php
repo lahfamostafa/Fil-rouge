@@ -18,14 +18,18 @@ class ManagerController extends Controller
 
     public function confirm($id)
     {
-        $res = Reservation::where('id', $id)
+        $reservation = Reservation::where('id', $id)
             ->whereHas('terrain', function ($q) {
-                $q->where('manager_id', Auth::id());
+                $q->where('manager_id', auth()->id());
             })
             ->firstOrFail();
 
-        $res->status = 'confirmed';
-        $res->save();
+        if ($reservation->status !== 'pending') {
+            return back()->with('error', 'Action non autorisée');
+        }
+
+        $reservation->status = 'confirmed';
+        $reservation->save();
 
         return back();
     }
@@ -38,6 +42,9 @@ class ManagerController extends Controller
             })
             ->firstOrFail();
 
+        if ($res->status !== 'pending') {
+            return back()->with('error', 'Action non autorisée');
+        }
         $res->status = 'cancelled';
         $res->save();
 

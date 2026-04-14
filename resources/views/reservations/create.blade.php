@@ -20,14 +20,7 @@
         @foreach($slots as $slot)
 
             @php
-                $isBooked = false;
-
-                foreach($booked as $res){
-                    if(substr($res->start_time,0,5) == $slot){
-                        $isBooked = true;
-                        break;
-                    }
-                }
+                $isBooked = !in_array($slot, $availableSlots, true);
 
                 $isPast = false;
 
@@ -44,7 +37,7 @@
                     border-radius:8px;
                     cursor:pointer;
                     background-color:
-                        {{ $isBooked ? '#ccc' : ($isPast ? '#999' : '#22c55e') }};
+                        {{ $isBooked ? '#FF0000' : ($isPast ? '#999' : '#22c55e') }};
                     color:white;
                 "
                 {{ ($isBooked || $isPast) ? 'disabled' : '' }}
