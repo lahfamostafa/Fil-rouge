@@ -29,7 +29,7 @@ class TerrainController extends Controller
      */
     public function create()
     {
-        //
+        return view('terrains.create');
     }
 
     /**
