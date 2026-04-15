@@ -57,6 +57,7 @@
 @endif
 <script>
 function selectSlot(slot) {
+    // e.target.classList.add('rounded-2xl')
 
     // start_time
     document.getElementById('start_time').value = slot;
@@ -75,6 +76,6 @@ function selectSlot(slot) {
         btn.style.outline = "none";
     });
 
-    event.target.style.outline = "3px solid black";
+    event.target.style.outline = "2px solid green";
 }
 </script>
