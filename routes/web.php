@@ -12,6 +12,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -19,17 +20,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservations/create/{terrain}', [ReservationController::class, 'create']);
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
+    Route::patch('/reservations/{reservation}', [ReservationController::class, 'update']);
     Route::get('/mes-reservations', [ReservationController::class, 'myReservations']);
 
     Route::get('/terrains', [TerrainController::class, 'index']);
     Route::delete('/terrains/{id}', [TerrainController::class, 'destroy']);
     Route::get('/terrains/create', [TerrainController::class, 'create']);
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('auth')
-        ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::middleware(['auth', 'role:manager'])->group(function () {
+    Route::middleware('role:manager')->group(function () {
+
         Route::get('/manager/dashboard', [ManagerController::class, 'dashboard']);
 
         Route::patch('/manager/reservations/{id}/confirm', [ManagerController::class, 'confirm']);
