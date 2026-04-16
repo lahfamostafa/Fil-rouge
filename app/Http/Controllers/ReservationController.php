@@ -201,7 +201,10 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        //
+        $reservation->status = 'cancelled';
+        $reservation->save();
+
+        return back();
     }
 
     /**

@@ -12,8 +12,11 @@ class ManagerController extends Controller
     public function dashboard()
     {
         $manager = Auth::user();
-        $terrains = $manager->terrains()->with('reservations')->get() ;
-        return view('manager.dashboard', compact('terrains'));
+        $terrains = $manager->terrains()->with('reservations')->get();
+        $reservations = Reservation::whereHas('terrain', function ($q) use ($manager) {
+            $q->where('manager_id', $manager->id);
+        })->get();
+        return view('manager.dashboard', compact('terrains','reservations'));
     }
 
     public function confirm($id)
