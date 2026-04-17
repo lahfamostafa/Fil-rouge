@@ -23,6 +23,9 @@ class ReservationController extends Controller
     public function create($terrain, Request $request)
     {
         $terrain = Terrain::findOrFail($terrain);
+        if (!$terrain->is_active) {
+            abort(403);
+        }
 
         $date = $request->date;
 
@@ -48,8 +51,14 @@ class ReservationController extends Controller
 
             foreach ($slots as $slot) {
 
-                $isBooked = $booked->contains(function ($res) use ($slot) {
-                    return substr($res->start_time, 0, 5) == $slot;
+                $slotTime = strtotime($slot);
+
+                $isBooked = $booked->contains(function ($res) use ($slotTime) {
+
+                    $resStart = strtotime($res->start_time);
+                    $resEnd = strtotime($res->end_time);
+
+                    return $slotTime >= $resStart && $slotTime < $resEnd;
                 });
 
                 if (!$isBooked) {
@@ -75,6 +84,17 @@ class ReservationController extends Controller
     {
         $terrain = Terrain::findOrFail($request->terrain_id);
 
+        if (!$terrain->is_active) {
+            return back()->with('error', 'Terrain غير متاح');
+        }
+        
+        $request->validate([
+            'terrain_id' => 'required|exists:terrains,id',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+        ]);
+
         $start_time = $request->start_time;
         $end_time = $request->end_time;
         $start_time = date('H:i:s', strtotime($start_time));
@@ -96,20 +116,17 @@ class ReservationController extends Controller
             return back()->with('error', 'Ce créneau est déjà réservé');
         }
 
-        $request->validate([
-            'date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required',
-        ]);
+        $reservation = new Reservation();
 
-        Reservation::create([
-            'user_id' => Auth::id(),
-            'terrain_id' => $terrain->id,
-            'date' => $request->date,
-            'start_time' => $start_time,
-            'end_time' => $end_time,
-            'total_price' => $total,
-            'status' => 'pending'
-        ]);
+        $reservation->user_id = Auth::id();
+        $reservation->terrain_id = $terrain->id;
+        $reservation->date = $request->date;
+        $reservation->start_time = $start_time;
+        $reservation->end_time = $end_time;
+        $reservation->total_price = $total;
+        $reservation->status = 'pending';
+
+        $reservation->save();
 
         return back()->with('success', 'Réservation réussie');
     }
@@ -131,22 +148,34 @@ class ReservationController extends Controller
                 ->where('user_id', $user->id);
         }
 
-        // 🔍 filters
+        $now = now();
+
         if ($request->filter == 'past') {
-            $query->where('date', '<', now()->toDateString());
+            $query->where(function ($q) use ($now) {
+                $q->where('date', '<', $now->toDateString())
+                ->orWhere(function ($q2) use ($now) {
+                    $q2->where('date', $now->toDateString())
+                        ->where('end_time', '<', $now->format('H:i:s'));
+                });
+            });
         }
 
         if ($request->filter == 'today') {
-            $query->where('date', now()->toDateString());
+            $query->where('date', $now->toDateString());
         }
 
         if ($request->filter == 'upcoming') {
-            $query->where('date', '>', now()->toDateString());
+            $query->where(function ($q) use ($now) {
+                $q->where('date', '>', $now->toDateString())
+                ->orWhere(function ($q2) use ($now) {
+                    $q2->where('date', $now->toDateString())
+                        ->where('start_time', '>', $now->format('H:i:s'));
+                });
+            });
         }
 
         $reservations = $query->orderBy('date', 'desc')->get();
 
-        if($user->role == 'manager') return view('reservations.my', compact('reservations'));
         return view('reservations.my', compact('reservations'));
     }
 
@@ -172,7 +201,10 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        //
+        $reservation->status = 'cancelled';
+        $reservation->save();
+
+        return back();
     }
 
     /**
@@ -184,7 +216,9 @@ class ReservationController extends Controller
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        $reservation->delete();
+        $reservation->update([
+            'status' => 'cancelled'
+        ]);
 
         return back()->with('success', 'Réservation annulée');
     }

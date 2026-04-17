@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Terrain extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'name',
         'location',
@@ -16,13 +18,19 @@ class Terrain extends Model
         'closing_time',
         'image',
         'is_active',
-        'manager_id'
+    ];
+
+    protected $casts = [
+        'price' => 'float',
+        'is_active' => 'boolean',
+        'opening_time' => 'datetime:H:i',
+        'closing_time' => 'datetime:H:i',
     ];
 
     // 🔗 Relation: Terrain appartient à un manager
     public function manager()
     {
-        return $this->belongsTo(User::class, 'manager_id');
+        return $this->belongsTo(User::class);
     }
 
     // 🔗 Relation: Terrain a plusieurs réservations
