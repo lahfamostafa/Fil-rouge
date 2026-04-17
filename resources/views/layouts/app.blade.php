@@ -56,7 +56,6 @@
             </a>
 
             {{-- Mes réservations (client only) --}}
-            @if(auth()->user()->role == 'client')
             <a href="/mes-reservations"
                class="sidebar-link {{ request()->is('mes-reservations*') ? 'active' : '' }} flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all group">
                 <span class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-green-50 flex items-center justify-center shrink-0 transition-colors {{ request()->is('mes-reservations*') ? '!bg-white/20' : '' }}">
@@ -66,7 +65,6 @@
                 </span>
                 Mes réservations
             </a>
-            @endif
 
             {{-- Annonces --}}
             <a href="/annonces"

@@ -8,7 +8,7 @@
     {{-- Terrain info card --}}
     <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden mb-5">
         <div class="relative h-36 bg-slate-100">
-            <img src="{{ $terrain->image ?? 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=200&fit=crop' }}"
+            <img src="{{ asset('storage/'.$terrain->image) }}"
                  class="w-full h-full object-cover" alt="{{ $terrain->name }}">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div class="absolute bottom-4 left-4">

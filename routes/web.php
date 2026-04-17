@@ -37,6 +37,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('/manager/reservations/{id}/cancel', [ManagerController::class, 'cancel']);
 
         Route::post('/terrains', [TerrainController::class, 'store']);
+        Route::get('/terrains/{id}/edit', [TerrainController::class, 'edit']);
+        Route::put('/terrains/{id}', [TerrainController::class, 'update']);
     });
 
 });

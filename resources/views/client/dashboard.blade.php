@@ -68,37 +68,4 @@
 
 </div>
 
-@if ($res->status === 'pending')
-    <!-- Confirm -->
-    <form action="/manager/reservations/{{ $res->id }}/confirm" method="POST"
-        class="inline">
-        @csrf
-        @method('PATCH')
-
-        <button class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded">
-            ✔
-        </button>
-    </form>
-
-    <!-- Cancel -->
-    <form action="/manager/reservations/{{ $res->id }}/cancel" method="POST"
-        class="inline">
-        @csrf
-        @method('PATCH')
-
-        <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
-            ✖
-        </button>
-    </form>
-@else
-    <!-- disabled state -->
-    <button disabled class="bg-gray-300 text-gray-600 px-2 py-1 rounded cursor-not-allowed">
-        ✔
-    </button>
-
-    <button disabled class="bg-gray-300 text-gray-600 px-2 py-1 rounded cursor-not-allowed">
-        ✖
-    </button>
-@endif
-
 @endsection

@@ -1,15 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Terrains')
 
-@section('header_actions')
-    @if(auth()->user()->role == 'manager')
-        <a href="/terrains/create"
-           class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm shadow-green-200">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            Ajouter un terrain
-        </a>
-    @endif
-@endsection
 
 @section('content')
 
@@ -99,7 +90,7 @@
 
         {{-- Image --}}
         <div class="relative overflow-hidden h-44 bg-slate-100">
-            <img src="{{ $terrain->image ?? 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=200&fit=crop' }}"
+            <img src="{{ asset('storage/'.$terrain->image) }}"
                  alt="{{ $terrain->name }}"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
             <div class="absolute top-3 right-3">
@@ -120,7 +111,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-50">
                 <div class="flex items-center gap-1.5 text-xs text-slate-400">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
-                    {{ substr($terrain->opening_time, 0, 5) }} – {{ substr($terrain->closing_time, 0, 5) }}
+                    {{ substr($terrain->opening_time, 11, 5) }} – {{ substr($terrain->closing_time, 11, 5) }}
                 </div>
 
                 @if(auth()->user()->role != 'manager')
