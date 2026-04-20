@@ -72,4 +72,14 @@ class User extends Authenticatable
     {
         return $this->role === 'client';
     }
+
+    public function matches()
+    {
+        return $this->hasMany(Matche::class, 'creator_id');
+    }
+
+    public function participations()
+    {
+        return $this->hasMany(MatchParticipant::class);
+    }
 }
