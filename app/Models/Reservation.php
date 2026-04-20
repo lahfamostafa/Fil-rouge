@@ -31,4 +31,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(Terrain::class);
     }
+
+    public function match()
+    {
+        return $this->hasOne(Matche::class, 'reservation_id');
+    }
 }
