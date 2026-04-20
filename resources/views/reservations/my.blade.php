@@ -44,6 +44,14 @@
                     <span class="text-xs font-bold text-green-600">{{ $res->total_price }} DH</span>
                 </div>
             </div>
+            
+            @if(!$res->match)
+                @if($res->status == 'confirmed')
+                    <a href="/matches/create/{{ $res->id }}">Créer match</a>
+                @endif
+            @else
+                <span>Match déjà créé</span>
+            @endif
 
             {{-- Actions + Status --}}
             <div class="flex items-center gap-2 shrink-0">

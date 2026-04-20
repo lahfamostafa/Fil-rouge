@@ -111,6 +111,13 @@
                 </span>
                 Mes réservations
             </a>
+            <a href="/matches" @click="sidebarOpen=false"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition-all group">
+                <span class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-green-50 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-slate-500 group-hover:text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </span>
+                Matches
+            </a>
             <a href="/annonces" @click="sidebarOpen=false"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition-all group">
                 <span class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-green-50 flex items-center justify-center shrink-0">
