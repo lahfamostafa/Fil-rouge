@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\MatcheController;
+use App\Http\Controllers\MatchParticipantController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TerrainController;
@@ -28,6 +30,28 @@ Route::middleware('auth')->group(function () {
     Route::get('/terrains/create', [TerrainController::class, 'create']);
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/matches', [MatcheController::class, 'index'])->name('matches.index');
+    Route::get('/matches/create/{reservation}', [MatcheController::class, 'create']);
+    Route::post('/matches', [MatcheController::class, 'store'])->name('matches.store');
+
+    // Matches (public)
+    // Route::get('/matches', [MatcheController::class, 'index']);
+    Route::get('/matches/{id}', [MatcheController::class, 'show'])->name('matches.show');
+    
+    // Join
+    Route::post('/matches/{match}/join', [MatchParticipantController::class, 'join'])
+    ->name('matches.join');
+
+    // Route::post('/matches/{match}/join', [MatchParticipantController::class, 'join']);
+
+    // Creator dashboard (requests)
+    Route::get('/matches/{match}/requests', [MatchParticipantController::class, 'requests'])->name('matches.requests');
+        // ->middleware('role:manager'); // أو auth فقط حسب logic ديالك
+
+    // Accept / Reject
+    Route::patch('/matches/participants/{id}/accept', [MatchParticipantController::class, 'accept'])->name('matches.participants.accept');
+    Route::patch('/matches/participants/{id}/reject', [MatchParticipantController::class, 'reject'])->name('matches.participants.reject');
 
     Route::middleware('role:manager')->group(function () {
 
