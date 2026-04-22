@@ -185,7 +185,7 @@
         </div>
         <h3 class="font-semibold text-slate-600 mb-1">Aucun terrain</h3>
         <p class="text-slate-400 text-sm mb-4">Ajoutez votre premier terrain pour commencer</p>
-        <a href="/terrains/create"
+        <a href="/terrains"
            class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
