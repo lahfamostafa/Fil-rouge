@@ -73,7 +73,7 @@ class MatchParticipantController extends Controller
             ->where('status', 'accepted')
             ->count();
 
-        if ($current >= $match->max_players) {
+        if ($match->status == 'full') {
             return back()->with('error', 'Match complet');
         }
 
@@ -85,7 +85,7 @@ class MatchParticipantController extends Controller
         // ❌ déjà demandé
         $exists = MatchParticipant::where('match_id', $matchId)
             ->where('user_id', Auth::id())
-            ->whereIn('status', ['pending','accepted'])
+            ->whereIn('status', ['pending', 'accepted'])
             ->exists();
 
         if ($exists) {
@@ -106,49 +106,57 @@ class MatchParticipantController extends Controller
         if ($match->creator_id !== Auth::id()) {
             abort(403, 'Only the match creator can view requests.');
         }
- 
+
         $match->load(['reservation.terrain', 'creator']);
- 
+
         $pending = $match->participants()
             ->with('user')
             ->where('status', 'pending')
             ->latest()
             ->get();
- 
+
         $accepted = $match->participants()
             ->with('user')
             ->where('status', 'accepted')
             ->get();
- 
+
         return view('matches.requests', compact('match', 'pending', 'accepted'));
     }
 
     public function accept($id)
     {
         $p = MatchParticipant::findOrFail($id);
-        
+
         if ($p->match->creator_id != Auth::id()) {
             abort(403);
         }
-        
-        $p->update(['status' => 'accepted']);
-        
+
         $acceptedCount = $p->match->participants()
-            ->where('status','accepted')
+            ->where('status', 'accepted')
             ->count();
 
         if ($acceptedCount >= $p->match->max_players) {
-            $p->match->update(['status' => 'full']);
+            return back()->with('error', 'Match déjà complet');
         } else {
-            $p->match->update(['status' => 'open']);
+            $p->match->update(['status' => 'full']);
         }
-        
+
+        $p->update(['status' => 'accepted']);
+
         return back();
     }
 
     public function reject($id)
     {
         $p = MatchParticipant::findOrFail($id);
+
+        $acceptedCount = $p->match->participants()
+            ->where('status', 'accepted')
+            ->count();
+
+        if ($acceptedCount < $p->match->max_players) {
+            $p->match->update(['status' => 'open']);
+        }
 
         if ($p->match->creator_id != Auth::id()) {
             abort(403);

@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/matches', [MatcheController::class, 'index'])->name('matches.index');
-    Route::get('/matches/create/{reservation}', [MatcheController::class, 'create']);
+    Route::get('/matches/create/{reservation}', [MatcheController::class, 'create'])->name('matche.create');
     Route::post('/matches', [MatcheController::class, 'store'])->name('matches.store');
 
     // Matches (public)

@@ -85,9 +85,9 @@ class ReservationController extends Controller
         $terrain = Terrain::findOrFail($request->terrain_id);
 
         if (!$terrain->is_active) {
-            return back()->with('error', 'Terrain غير متاح');
+            return back()->with('error', 'Terrain non disponble');
         }
-        
+
         $request->validate([
             'terrain_id' => 'required|exists:terrains,id',
             'date' => 'required|date|after_or_equal:today',
@@ -105,7 +105,7 @@ class ReservationController extends Controller
 
         $exists = Reservation::where('terrain_id', $terrain->id)
             ->where('date', $request->date)
-            ->whereIn('status', ['pending', 'confirmed']) 
+            ->whereIn('status', ['pending', 'confirmed'])
             ->where(function ($query) use ($start_time, $end_time) {
                 $query->where('start_time', '<', $end_time)
                     ->where('end_time', '>', $start_time);
@@ -141,7 +141,6 @@ class ReservationController extends Controller
                 ->whereHas('terrain', function ($q) use ($user) {
                     $q->where('manager_id', $user->id);
                 });
-
         } else {
 
             $query = Reservation::with('terrain')
@@ -153,10 +152,10 @@ class ReservationController extends Controller
         if ($request->filter == 'past') {
             $query->where(function ($q) use ($now) {
                 $q->where('date', '<', $now->toDateString())
-                ->orWhere(function ($q2) use ($now) {
-                    $q2->where('date', $now->toDateString())
-                        ->where('end_time', '<', $now->format('H:i:s'));
-                });
+                    ->orWhere(function ($q2) use ($now) {
+                        $q2->where('date', $now->toDateString())
+                            ->where('end_time', '<', $now->format('H:i:s'));
+                    });
             });
         }
 
@@ -167,10 +166,10 @@ class ReservationController extends Controller
         if ($request->filter == 'upcoming') {
             $query->where(function ($q) use ($now) {
                 $q->where('date', '>', $now->toDateString())
-                ->orWhere(function ($q2) use ($now) {
-                    $q2->where('date', $now->toDateString())
-                        ->where('start_time', '>', $now->format('H:i:s'));
-                });
+                    ->orWhere(function ($q2) use ($now) {
+                        $q2->where('date', $now->toDateString())
+                            ->where('start_time', '>', $now->format('H:i:s'));
+                    });
             });
         }
 
@@ -201,7 +200,14 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        $reservation->status = 'cancelled';
+        // dd($reservation->match->exists());
+        if ($reservation->match) {
+            $CountAccepted = $reservation->match->participants->where('status', 'accepted')->count();
+            if ($CountAccepted > 0) {
+                return back()->with('error', 'Impossible d’annuler, des joueurs sont déjà acceptés');
+            }
+        }
+        $reservation->status = 'cancelled'; 
         $reservation->save();
 
         return back();

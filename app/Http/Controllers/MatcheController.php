@@ -15,29 +15,32 @@ class MatcheController extends Controller
      */
     public function index()
     {
-        $matches = Matche::with('participants')
-            // ->where('status', 'open')
-            ->paginate(12);
-        // $matches = Matche::
+        $matches = Matche::with('participants')->paginate(12);
 
+        foreach ($matches as $match) {
+            $participation = $match->participants
+                ->where('user_id', Auth::id())
+                ->first();
+
+            $match->user_status = $participation ? $participation->status : null;
+        }
         return view('matches.index', compact('matches'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create($reservationId)
+    public function create(Reservation $reservation)
     {
-        $reservation = Reservation::with('terrain')->findOrFail($reservationId);
-
+        $reservations = Reservation::with('terrain')->findOrFail($reservation->id);
         // sécurité
         if ($reservation->user_id != Auth::id()) {
             abort(403);
         }
 
-        if ($reservation->status != 'confirmed') {
-            abort(403);
-        }
+        // if ($reservation->status != 'confirmed') {
+        //     abort(403);
+        // }
 
         return view('matches.create', compact('reservation'));
     }
@@ -56,8 +59,16 @@ class MatcheController extends Controller
         $reservation = Reservation::findOrFail($request->reservation_id);
 
         // sécurité
+        // dd(aut)
         if ($reservation->user_id != Auth::id()) {
             abort(403);
+        }
+
+        $exists = Matche::where('reservation_id', $reservation->id)->exists();
+        // dd($exists);
+        if ($exists) {
+            $error = 'la reservation a dejat creer ';
+            return redirect()->route('matche.create', $reservation->id)->with('error', $error);
         }
 
         Matche::create([

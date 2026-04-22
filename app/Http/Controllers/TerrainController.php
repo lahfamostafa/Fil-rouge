@@ -48,7 +48,7 @@ class TerrainController extends Controller
             'price' => 'required|numeric',
             'opening_time' => 'required',
             'closing_time' => 'required',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $imagePath = null;
