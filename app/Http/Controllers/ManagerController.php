@@ -16,7 +16,7 @@ class ManagerController extends Controller
         $reservations = Reservation::whereHas('terrain', function ($q) use ($manager) {
             $q->where('manager_id', $manager->id);
         })->get();
-        return view('manager.dashboard', compact('terrains','reservations'));
+        return view('manager.dashboard', compact('terrains', 'reservations'));
     }
 
     public function confirm($id)
@@ -43,6 +43,7 @@ class ManagerController extends Controller
             ->whereHas('terrain', function ($q) {
                 $q->where('manager_id', Auth::id());
             })
+            ->with('match.participants')
             ->firstOrFail();
 
         if ($res->status !== 'pending') {
