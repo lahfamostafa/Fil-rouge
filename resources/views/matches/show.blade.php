@@ -153,6 +153,13 @@
                 {{-- Right Column: Actions & Creator --}}
                 <div class="space-y-6">
 
+                    @if(auth()->id() === $match->creator_id)
+    <a href="{{ route('announcements.create', $match) }}"
+       class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm">
+        + creer annonce
+    </a>
+@endif
+
                     {{-- Creator Card --}}
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                         <p class="text-xs text-gray-400 uppercase tracking-wider mb-3">Created by</p>

@@ -82,4 +82,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(MatchParticipant::class);
     }
+
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

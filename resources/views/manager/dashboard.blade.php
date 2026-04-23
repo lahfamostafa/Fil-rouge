@@ -1,16 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Manager Dashboard')
 
-@section('header_actions')
-    <a href="/terrains"
-       class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white text-sm font-semibold rounded-xl transition-all shadow-sm shadow-green-200">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-        </svg>
-        Ajouter un terrain
-    </a>
-@endsection
-
 @section('content')
 
 {{-- ============================================================
