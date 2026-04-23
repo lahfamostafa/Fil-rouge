@@ -32,4 +32,9 @@ class Matche extends Model
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
+
+    public function announcement()
+    {
+        return $this->hasOne(Announcement::class);
+    }
 }
