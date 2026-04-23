@@ -52,7 +52,7 @@
         </div>
     </a>
 
-    <a href="/annonces"
+    <a href="/announcements"
        class="group bg-white rounded-2xl p-5 border border-slate-100 hover:border-amber-200 hover:shadow-lg hover:shadow-amber-50 transition-all duration-200">
         <div class="w-11 h-11 rounded-xl bg-amber-50 group-hover:bg-amber-100 flex items-center justify-center mb-4 transition-colors">
             <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
