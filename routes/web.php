@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MatcheController;
@@ -52,6 +54,33 @@ Route::middleware('auth')->group(function () {
     // Accept / Reject
     Route::patch('/matches/participants/{id}/accept', [MatchParticipantController::class, 'accept'])->name('matches.participants.accept');
     Route::patch('/matches/participants/{id}/reject', [MatchParticipantController::class, 'reject'])->name('matches.participants.reject');
+
+    // Route::get('/announcements', [AnnouncementController::class, 'index'])
+    // ->name('announcements.index');
+    // Route::post('/announcements', [AnnouncementController::class, 'store'])
+    // ->name('announcements.store');
+
+    // Route::get('/matches/{match}/announcements', [AnnouncementController::class, 'index'])
+    // ->name('matches.announcements.index');
+
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+    // Route::get('/announcements/create/{match}', [AnnouncementController::class, 'create'])
+    // ->name('announcements.create');
+
+    // ================= ANNOUNCEMENTS =================
+
+// list
+Route::get('/announcements', [AnnouncementController::class, 'index'])
+    ->name('announcements.index');
+
+// create page (IMPORTANT: kay7taj match_id)
+Route::get('/announcements/create/{match}', [AnnouncementController::class, 'create'])
+    ->name('announcements.create');
+
+// store
+Route::post('/announcements', [AnnouncementController::class, 'store'])
+    ->name('announcements.store');
 
     Route::middleware('role:manager')->group(function () {
 
