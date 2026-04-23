@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReservationStatusMail;
 use App\Models\Reservation;
 use App\Models\Terrain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -209,6 +211,8 @@ class ReservationController extends Controller
         }
         $reservation->status = 'cancelled'; 
         $reservation->save();
+
+        Mail::to($reservation->user->email)->send(new ReservationStatusMail($reservation,'cancelled'));
 
         return back();
     }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReservationStatusMail;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ManagerController extends Controller
 {
@@ -34,6 +36,8 @@ class ManagerController extends Controller
         $reservation->status = 'confirmed';
         $reservation->save();
 
+        Mail::to($reservation->user->email)->send(new ReservationStatusMail($reservation,'confirmed'));
+
         return back();
     }
 
@@ -51,6 +55,8 @@ class ManagerController extends Controller
         }
         $res->status = 'cancelled';
         $res->save();
+
+        Mail::to($res->user->email)->send(new ReservationStatusMail($res,'cancelled'));
 
         return back();
     }
