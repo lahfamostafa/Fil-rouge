@@ -137,11 +137,16 @@ class MatchParticipantController extends Controller
 
         if ($acceptedCount >= $p->match->max_players) {
             return back()->with('error', 'Match déjà complet');
-        } else {
-            $p->match->update(['status' => 'full']);
         }
 
         $p->update(['status' => 'accepted']);
+
+        $acceptedCount = $p->match->participants()
+            ->where('status', 'accepted')
+            ->count();
+
+        if ($acceptedCount >= $p->match->max_players)
+            $p->match->update(['status' => 'full']);
 
         return back();
     }
