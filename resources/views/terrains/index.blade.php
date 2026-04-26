@@ -223,7 +223,7 @@
                                 <circle cx="12" cy="12" r="10"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/>
                             </svg>
-                            {{ substr($terrain->opening_time, 0, 5) }} – {{ substr($terrain->closing_time, 0, 5) }}
+                            {{ substr($terrain->opening_time, 11, 5) }} – {{ substr($terrain->closing_time, 11, 5) }}
                         </div>
 
                         {{-- Reserve button (client only) --}}
@@ -278,8 +278,11 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    const map = L.map('map').setView([33.5731, -7.5898], 12);
+    const map = L.map('map').setView([34.6594, -1.9344], 12);
 
+    // L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    // L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
