@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/reservations/{reservation}', [ReservationController::class, 'update']);
     Route::get('/mes-reservations', [ReservationController::class, 'myReservations']);
 
-    Route::get('/terrains', [TerrainController::class, 'index']);
+    Route::get('/terrains', [TerrainController::class, 'index'])->name('terrains.index');
 
     Route::patch('/matches/participants/{id}/accept', [MatchParticipantController::class, 'accept'])->name('matches.participants.accept');
     Route::patch('/matches/participants/{id}/reject', [MatchParticipantController::class, 'reject'])->name('matches.participants.reject');
