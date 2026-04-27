@@ -21,68 +21,50 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/reservations/create/{terrain}', [ReservationController::class, 'create']);
-    Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
     Route::patch('/reservations/{reservation}', [ReservationController::class, 'update']);
     Route::get('/mes-reservations', [ReservationController::class, 'myReservations']);
 
-    Route::get('/terrains', [TerrainController::class, 'index']);
-    Route::delete('/terrains/{id}', [TerrainController::class, 'destroy']);
-    Route::get('/terrains/create', [TerrainController::class, 'create']);
+    Route::get('/terrains', [TerrainController::class, 'index'])->name('terrains.index');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/matches', [MatcheController::class, 'index'])->name('matches.index');
-    Route::get('/matches/create/{reservation}', [MatcheController::class, 'create'])->name('matche.create');
-    Route::post('/matches', [MatcheController::class, 'store'])->name('matches.store');
-
-    // Matches (public)
-    // Route::get('/matches', [MatcheController::class, 'index']);
-    Route::get('/matches/{id}', [MatcheController::class, 'show'])->name('matches.show');
-    
-    // Join
-    Route::post('/matches/{match}/join', [MatchParticipantController::class, 'join'])
-    ->name('matches.join');
-
-    // Route::post('/matches/{match}/join', [MatchParticipantController::class, 'join']);
-
-    // Creator dashboard (requests)
-    Route::get('/matches/{match}/requests', [MatchParticipantController::class, 'requests'])->name('matches.requests');
-        // ->middleware('role:manager'); // أو auth فقط حسب logic ديالك
-
-    // Accept / Reject
     Route::patch('/matches/participants/{id}/accept', [MatchParticipantController::class, 'accept'])->name('matches.participants.accept');
     Route::patch('/matches/participants/{id}/reject', [MatchParticipantController::class, 'reject'])->name('matches.participants.reject');
 
-    // Route::get('/announcements', [AnnouncementController::class, 'index'])
-    // ->name('announcements.index');
-    // Route::post('/announcements', [AnnouncementController::class, 'store'])
-    // ->name('announcements.store');
 
-    // Route::get('/matches/{match}/announcements', [AnnouncementController::class, 'index'])
-    // ->name('matches.announcements.index');
+    Route::middleware('role:client')->group(function () {
 
-    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+        Route::get('/matches/{id}', [MatcheController::class, 'show'])->name('matches.show');
 
-    // Route::get('/announcements/create/{match}', [AnnouncementController::class, 'create'])
-    // ->name('announcements.create');
+        Route::post('/matches/{match}/join', [MatchParticipantController::class, 'join'])
+            ->name('matches.join');
 
-    // ================= ANNOUNCEMENTS =================
+        Route::get('/matches', [MatcheController::class, 'index'])->name('matches.index');
+        Route::get('/matches/create/{reservation}', [MatcheController::class, 'create'])->name('matche.create');
+        Route::post('/matches', [MatcheController::class, 'store'])->name('matches.store');
 
-// list
-Route::get('/announcements', [AnnouncementController::class, 'index'])
-    ->name('announcements.index');
+        Route::get('/reservations/create/{terrain}', [ReservationController::class, 'create']);
+        Route::post('/reservations', [ReservationController::class, 'store']);
 
-// create page (IMPORTANT: kay7taj match_id)
-Route::get('/announcements/create/{match}', [AnnouncementController::class, 'create'])
-    ->name('announcements.create');
+        Route::get('/matches/{match}/requests', [MatchParticipantController::class, 'requests'])->name('matches.requests');
 
-// store
-Route::post('/announcements', [AnnouncementController::class, 'store'])
-    ->name('announcements.store');
+        Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+        Route::get('/announcements', [AnnouncementController::class, 'index'])
+            ->name('announcements.index');
+
+        Route::get('/announcements/create/{match}', [AnnouncementController::class, 'create'])
+            ->name('announcements.create');
+
+        Route::post('/announcements', [AnnouncementController::class, 'store'])
+            ->name('announcements.store');
+    });
 
     Route::middleware('role:manager')->group(function () {
+
+        Route::delete('/terrains/{id}', [TerrainController::class, 'destroy']);
+        Route::get('/terrains/create', [TerrainController::class, 'create']);
 
         Route::get('/manager/dashboard', [ManagerController::class, 'dashboard']);
 
@@ -93,7 +75,6 @@ Route::post('/announcements', [AnnouncementController::class, 'store'])
         Route::get('/terrains/{id}/edit', [TerrainController::class, 'edit']);
         Route::put('/terrains/{id}', [TerrainController::class, 'update']);
     });
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
