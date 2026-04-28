@@ -5,7 +5,6 @@
 
 <div class="max-w-2xl mx-auto">
 
-    {{-- Terrain info card --}}
     <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden mb-5">
         <div class="relative h-36 bg-slate-100">
             <img src="{{ asset('storage/'.$terrain->image) }}"
@@ -26,7 +25,6 @@
         </div>
     </div>
 
-    {{-- Date picker --}}
     <div class="bg-white rounded-2xl border border-slate-100 p-5 mb-5">
         <h3 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
             <span class="w-6 h-6 rounded-lg bg-green-50 flex items-center justify-center text-green-600">
@@ -46,7 +44,6 @@
         </form>
     </div>
 
-    {{-- Slots --}}
     @if($date)
     <form action="/reservations" method="POST" id="reservationForm">
         @csrf
@@ -64,7 +61,6 @@
                 <span class="ml-auto text-xs text-slate-400 font-normal">{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</span>
             </h3>
 
-            {{-- Legend --}}
             <div class="flex items-center gap-4 mb-4 mt-3 pb-3 border-b border-slate-50">
                 <div class="flex items-center gap-1.5 text-xs text-slate-500">
                     <span class="w-3 h-3 rounded bg-green-500"></span> Disponible
@@ -106,7 +102,6 @@
             </div>
         </div>
 
-        {{-- Summary + submit --}}
         <div id="summaryPanel" class="hidden bg-white rounded-2xl border border-green-200 p-5 mb-5">
             <div class="flex items-center justify-between">
                 <div>
@@ -131,7 +126,6 @@
 let selectedSlot = null;
 
 function selectSlot(slot) {
-    // Reset previous
     if (selectedSlot) {
         const prev = document.getElementById('slot-' + selectedSlot.replace(':', ''));
         if (prev) {

@@ -3,7 +3,6 @@
 
 @section('content')
 
-    {{-- Filter tabs --}}
     <div class="flex items-center gap-2 mb-6 overflow-x-auto pb-1">
         @php
             $filters = ['all' => 'Toutes', 'today' => 'Aujourd\'hui', 'upcoming' => 'À venir', 'past' => 'Passées'];
@@ -43,14 +42,12 @@
         </div>
     @endif
 
-    {{-- Reservations list --}}
     <div class="space-y-3">
         @forelse($reservations as $res)
             <div
                 class="bg-white rounded-2xl border border-slate-100 p-4 hover:shadow-md hover:shadow-slate-100 transition-all">
                 <div class="flex items-center gap-4">
 
-                    {{-- Date block --}}
                     <div class="w-14 shrink-0 text-center bg-slate-50 rounded-xl py-2.5 border border-slate-100">
                         <p class="text-xs font-bold text-slate-400 uppercase">
                             {{ \Carbon\Carbon::parse($res->date)->format('M') }}</p>
@@ -58,7 +55,6 @@
                             {{ \Carbon\Carbon::parse($res->date)->format('d') }}</p>
                     </div>
 
-                    {{-- Info --}}
                     <div class="flex-1 min-w-0">
                         <h3 class="font-bold text-slate-800 truncate">{{ $res->terrain->name }}</h3>
                         <div class="flex items-center gap-3 mt-1">
@@ -99,10 +95,8 @@
                         @endif
                     @endif
 
-                    {{-- Actions + Status --}}
                     <div class="flex items-center gap-2 shrink-0">
 
-                        {{-- Manager actions (pending only) --}}
                         @if (auth()->user()->role === 'manager' && $res->status === 'pending')
                             <form action="/manager/reservations/{{ $res->id }}/confirm" method="POST">
                                 @csrf @method('PATCH')
@@ -117,7 +111,6 @@
                             </form>
                         @endif
 
-                        {{-- Client cancel (non-cancelled) --}}
                         @if (auth()->user()->role === 'client' && $res->status !== 'cancelled' && !$res->match)
                             <form action="/reservations/{{ $res->id }}" method="POST">
                                 @csrf @method('PATCH')
@@ -132,7 +125,6 @@
                             </form>
                         @endif
 
-                        {{-- Manager cancel (pending only) --}}
                         @if (auth()->user()->role === 'manager' && $res->status === 'pending')
                             <form action="/manager/reservations/{{ $res->id }}/cancel" method="POST">
                                 @csrf @method('PATCH')
@@ -147,13 +139,12 @@
                             </form>
                         @endif
 
-                        {{-- Status badge --}}
                         <span
                             class="px-2.5 py-1 text-center rounded-lg text-xs font-bold whitespace-nowrap
-                    {{ $res->status == 'pending' ? 'w-24 bg-amber-50 text-amber-700 border border-amber-200' : '' }}
-                    {{ $res->status == 'confirmed' ? 'w-24 bg-green-50 text-green-700 border border-green-200' : '' }}
-                    {{ $res->status == 'cancelled' ? 'w-24 bg-red-50   text-red-600   border border-red-200' : '' }}
-                ">
+                                {{ $res->status == 'pending' ? 'w-24 bg-amber-50 text-amber-700 border border-amber-200' : '' }}
+                                {{ $res->status == 'confirmed' ? 'w-24 bg-green-50 text-green-700 border border-green-200' : '' }}
+                                {{ $res->status == 'cancelled' ? 'w-24 bg-red-50   text-red-600   border border-red-200' : '' }}
+                            ">
                             {{ $res->status == 'pending' ? '⏳ En attente' : '' }}
                             {{ $res->status == 'confirmed' ? '✓ Confirmé' : '' }}
                             {{ $res->status == 'cancelled' ? '✕ Annulé' : '' }}

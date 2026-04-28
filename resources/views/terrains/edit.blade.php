@@ -5,10 +5,8 @@
 
 <div class="max-w-2xl mx-auto">
 
-    {{-- Card --}}
     <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
 
-        {{-- Header --}}
         <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
@@ -32,7 +30,6 @@
             @endif
         </div>
 
-        {{-- Errors --}}
         @if ($errors->any())
         <div class="mx-5 mt-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
             @foreach ($errors->all() as $error)
@@ -52,7 +49,6 @@
 
             <div class="p-5 space-y-5">
 
-                {{-- ── Section 1 : Informations générales ── --}}
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 pb-2 border-b border-slate-100">
                         Informations générales
@@ -100,14 +96,12 @@
                     </div>
                 </div>
 
-                {{-- ── Section 2 : Tarif & horaires ── --}}
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 pb-2 border-b border-slate-100">
                         Tarif &amp; horaires
                     </p>
                     <div class="space-y-3">
 
-                        {{-- Price --}}
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Prix par heure</label>
                             <div class="relative">
@@ -118,7 +112,6 @@
                             </div>
                         </div>
 
-                        {{-- Opening / Closing --}}
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Ouverture</label>
@@ -135,7 +128,6 @@
                     </div>
                 </div>
 
-                {{-- ── Section 3 : Statut & image ── --}}
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 pb-2 border-b border-slate-100">
                         Statut &amp; image
@@ -168,7 +160,6 @@
                                 <input type="file" name="image" accept="image/*" class="hidden">
                             </label>
 
-                            {{-- Current image preview --}}
                             @if($terrain->image)
                             <div class="flex items-center gap-3 mt-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl">
                                 <img src="{{ asset('storage/' . $terrain->image) }}"
@@ -187,7 +178,6 @@
 
             </div>
 
-            {{-- Footer actions --}}
             <div class="flex items-center gap-3 px-5 py-4 border-t border-slate-100 bg-slate-50/50">
                 <a href="/terrains"
                    class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-500 hover:bg-white hover:border-slate-300 transition-all">

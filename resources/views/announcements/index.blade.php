@@ -6,7 +6,6 @@
 <div class="py-10 bg-slate-50 min-h-screen">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 space-y-5">
 
-        {{-- ══ PAGE HEADER ════════════════════════════════════ --}}
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-xl font-bold text-slate-800 tracking-tight">Match Announcements</h2>
@@ -19,7 +18,6 @@
             </div>
         </div>
 
-        {{-- ══ FLASH MESSAGES ══════════════════════════════════ --}}
         @if(session('success'))
             <div class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl text-sm font-medium shadow-sm">
                 <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -38,7 +36,6 @@
             </div>
         @endif
 
-        {{-- ══ EMPTY STATE ══════════════════════════════════════ --}}
         @if($announcements->isEmpty())
             <div class="text-center py-24 bg-white rounded-3xl border border-slate-100 shadow-sm">
                 <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-5">
@@ -59,7 +56,6 @@
 
         @else
 
-        {{-- ══ ANNOUNCEMENTS FEED ═══════════════════════════════ --}}
         @foreach($announcements as $annonce)
             @php
                 $match         = $annonce->match;
@@ -86,7 +82,6 @@
 
             <article class="bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
 
-                {{-- ── HEADER: avatar + creator + status ──────── --}}
                 <div class="flex items-center justify-between px-5 pt-5 pb-3">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm">
@@ -108,7 +103,6 @@
                     </span>
                 </div>
 
-                {{-- ── ANNOUNCEMENT CONTENT (collapsible) ─────── --}}
                 @if($annonce->content)
                     <div class="px-5 pb-3">
                         <p class="text-sm text-slate-700 leading-relaxed" id="content-short-{{ $annonce->id }}">
@@ -127,7 +121,6 @@
                     </div>
                 @endif
 
-                {{-- ── TERRAIN CARD ────────────────────────────── --}}
                 <div class="mx-5 mb-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-sm">
                     <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
@@ -164,7 +157,6 @@
                     </div>
                 </div>
 
-                {{-- ── MATCH DESCRIPTION + PLAYERS ────────────── --}}
                 <div class="px-5 space-y-3">
                     @if(!empty($match->description))
                         <p class="text-sm text-slate-600 leading-relaxed bg-slate-50 rounded-xl px-4 py-3 border border-slate-100 italic">
@@ -190,13 +182,10 @@
                     </div>
                 </div>
 
-                {{-- ── SEPARATOR ───────────────────────────────── --}}
                 <div class="mx-5 my-4 border-t border-slate-100"></div>
 
-                {{-- ── PARTICIPATION STATUS + ACTIONS ─────────── --}}
                 <div class="px-5 pb-4 flex items-center justify-between gap-3 flex-wrap">
 
-                    {{-- Status pill --}}
                     <div class="shrink-0">
                         @if($isCreator)
                             <span class="inline-flex items-center gap-1.5 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-full">
@@ -281,10 +270,8 @@
                     </div>
                 </div>
 
-                {{-- ── COMMENTS SECTION ────────────────────────── --}}
                 <div class="border-t border-slate-100 mx-0">
 
-                    {{-- Toggle button --}}
                     <button onclick="toggleComments({{ $annonce->id }})"
                             class="w-full flex items-center justify-center gap-2 px-5 py-3 text-xs font-semibold text-slate-500 hover:text-emerald-600 hover:bg-slate-50 transition-all duration-150 group">
                         <svg class="w-4 h-4 group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,10 +283,8 @@
                         </span>
                     </button>
 
-                    {{-- Comments body (hidden by default) --}}
                     <div id="comments-{{ $annonce->id }}" class="hidden px-5 pb-5 space-y-3">
 
-                        {{-- Existing comments --}}
                         @if($annonce->comments->isNotEmpty())
                             <div class="space-y-3 pt-1">
                                 @foreach($annonce->comments as $comment)
@@ -319,7 +304,6 @@
                             <p class="text-xs text-slate-400 text-center py-2">No comments yet. Be the first!</p>
                         @endif
 
-                        {{-- Add comment form --}}
                         <form action="{{ route('comments.store') }}" method="POST" class="flex items-center gap-2 pt-1">
                             @csrf
                             <input type="hidden" name="announcement_id" value="{{ $annonce->id }}">
@@ -348,7 +332,6 @@
 
                     </div>
                 </div>
-                {{-- END COMMENTS --}}
 
             </article>
         @endforeach
@@ -360,7 +343,7 @@
             </div>
         @endif
 
-        @endif {{-- end @if isEmpty --}}
+        @endif 
 
     </div>
 </div>

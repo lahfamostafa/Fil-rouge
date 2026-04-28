@@ -1,4 +1,3 @@
-{{-- resources/views/matches/requests.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -24,7 +23,6 @@
     <div class="py-10">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-            {{-- Flash Messages --}}
             @if(session('success'))
                 <div class="flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl shadow-sm">
                     <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -34,7 +32,6 @@
                 </div>
             @endif
 
-            {{-- Stats Row --}}
             <div class="grid grid-cols-3 gap-4">
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
                     <p class="text-2xl font-bold text-yellow-500">{{ $pending->count() }}</p>
@@ -50,7 +47,6 @@
                 </div>
             </div>
 
-            {{-- Pending Requests --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h3 class="font-semibold text-gray-800">Pending Requests</h3>

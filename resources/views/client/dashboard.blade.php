@@ -14,13 +14,12 @@
         </svg>
     </div>
     <div class="relative">
-        <p class="text-green-100 text-sm font-medium mb-1">Bonjour 👋</p>
+        <p class="text-green-100 text-sm font-medium mb-1">Bonjour</p>
         <h2 class="text-2xl font-bold text-white mb-1">{{ auth()->user()->name }}</h2>
         <p class="text-green-100 text-sm">Prêt à réserver un terrain aujourd'hui ?</p>
     </div>
 </div>
 
-{{-- Quick action cards --}}
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
 
     <a href="/terrains"

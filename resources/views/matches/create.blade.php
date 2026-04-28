@@ -1,4 +1,3 @@
-{{-- resources/views/matches/create.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -18,7 +17,6 @@
     <div class="py-10">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {{-- Reservation Summary Card --}}
             <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 mb-8 text-white shadow-md">
                 <p class="text-sm text-green-100 font-medium uppercase tracking-wider mb-3">Reservation Details</p>
                 <div class="grid grid-cols-2 gap-4">
@@ -60,7 +58,6 @@
                 </div>
             @endif
 
-            {{-- Form Card --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-5 border-b border-gray-100">
                     <h3 class="text-base font-semibold text-gray-800">Match Settings</h3>
@@ -71,7 +68,6 @@
                     @csrf
                     <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
 
-                    {{-- Max Players --}}
                     <div>
                         <label for="max_players" class="block text-sm font-semibold text-gray-700 mb-2">
                             Joueurs necessaire <span class="text-red-500">*</span>
@@ -98,7 +94,6 @@
                         @enderror
                     </div>
 
-                    {{-- Description --}}
                     <div>
                         <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
                             Description <span class="text-gray-400 font-normal">(optional)</span>
@@ -117,11 +112,10 @@
                         <p class="mt-1.5 text-xs text-gray-400 text-right" id="char-count">0 / 500</p>
                     </div>
 
-                    {{-- Submit --}}
                     <div class="flex items-center gap-3 pt-2">
                         <button type="submit"
                                 class="flex-1 bg-green-600 hover:bg-green-700 active:scale-95 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-150 shadow-sm hover:shadow-md text-sm">
-                            ⚽ Create Match
+                             Create Match
                         </button>
                         <a href="{{ url('/mes-reservations') }}"
                            class="flex-1 text-center text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 py-3 px-6 rounded-xl transition">

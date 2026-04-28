@@ -27,13 +27,11 @@ class Terrain extends Model
         'closing_time' => 'datetime:H:i',
     ];
 
-    // 🔗 Relation: Terrain appartient à un manager
     public function manager()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 🔗 Relation: Terrain a plusieurs réservations
     public function reservations()
     {
         return $this->hasMany(Reservation::class);

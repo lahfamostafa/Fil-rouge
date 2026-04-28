@@ -23,7 +23,6 @@
     <div class="py-10 bg-slate-50 min-h-screen">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 space-y-5">
 
-            {{-- ── Validation errors ───────────────────────── --}}
             @if($errors->any())
                 <div class="bg-red-50 border border-red-200 rounded-2xl px-5 py-4">
                     <p class="text-xs font-bold text-red-600 uppercase tracking-wider mb-2">Please fix the following</p>
@@ -40,7 +39,6 @@
                 </div>
             @endif
 
-            {{-- ══ CARD 1 — Who's posting ══════════════════════ --}}
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
@@ -59,7 +57,6 @@
                 </div>
             </div>
 
-            {{-- ══ CARD 2 — Match info ══════════════════════════ --}}
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                 <div class="bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-4 flex items-center justify-between">
                     <div>
@@ -129,13 +126,11 @@
                 </div>
             </div>
 
-            {{-- ══ CARD 3 — Announcement form ══════════════════ --}}
             <form action="{{ route('announcements.store') }}" method="POST" id="announcementForm">
                 @csrf
 
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
-                    {{-- Composer area --}}
                     <div class="p-5">
                         <div class="flex items-start gap-3">
                             <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0 mt-0.5">
@@ -156,23 +151,8 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- Emoji toolbar + counter --}}
-                    <div class="px-5 py-3 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between">
-                        <div class="flex items-center gap-0.5">
-                            @foreach(['⚽','🏆','🔥','👟','📍','⏰','💪','🎯'] as $emoji)
-                                <button type="button"
-                                        onclick="insertEmoji('{{ $emoji }}')"
-                                        class="w-8 h-8 text-sm rounded-lg hover:bg-slate-200 transition-all flex items-center justify-center">
-                                    {{ $emoji }}
-                                </button>
-                            @endforeach
-                        </div>
-                        <p id="charCount" class="text-xs font-semibold text-slate-400 tabular-nums">0 / 1000</p>
-                    </div>
                 </div>
 
-                {{-- ══ CARD 4 — Actions ══════════════════════════ --}}
                 <div class="mt-5 bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
                     <div class="flex items-center gap-3">
                         <a href="{{ route('announcements.index') }}"
@@ -201,16 +181,6 @@
             counter.textContent = `${len} / 1000`;
             counter.classList.toggle('text-red-500', len > 900);
             counter.classList.toggle('text-slate-400', len <= 900);
-        }
-
-        function insertEmoji(emoji) {
-            const el    = document.getElementById('content');
-            const start = el.selectionStart;
-            const end   = el.selectionEnd;
-            el.value    = el.value.substring(0, start) + emoji + el.value.substring(end);
-            el.selectionStart = el.selectionEnd = start + emoji.length;
-            el.focus();
-            updateCount(el);
         }
 
         document.addEventListener('DOMContentLoaded', () => {

@@ -3,7 +3,6 @@
 
 @section('content')
 
-{{-- ══ VALIDATION ERRORS ══════════════════════════════════ --}}
 @if($errors->any())
     <div class="mb-6 bg-red-50 border border-red-200 rounded-2xl p-4">
         <div class="flex items-start gap-3">
@@ -20,7 +19,6 @@
     </div>
 @endif
 
-{{-- ══ PAGE HEADER ════════════════════════════════════════ --}}
 <div class="flex items-center justify-between mb-6">
     <div>
         <h2 class="text-xl font-bold text-slate-800 tracking-tight">Terrains</h2>
@@ -28,11 +26,9 @@
     </div>
 </div>
 
-{{-- ══ MANAGER: ADD TERRAIN ═══════════════════════════════ --}}
 @if(auth()->user()->role === 'manager')
     <div x-data="{ open: false }" class="mb-8">
 
-        {{-- Trigger button --}}
         <button @click="open = !open"
                 class="inline-flex items-center gap-2 border-2 border-dashed border-slate-200 hover:border-emerald-400 bg-white hover:bg-emerald-50/50 text-slate-400 hover:text-emerald-600 rounded-2xl px-5 py-3.5 text-sm font-semibold transition-all duration-150 group">
             <div class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-colors">
@@ -152,7 +148,6 @@
     </div>
 @endif
 
-{{-- ══ TERRAIN GRID ════════════════════════════════════════ --}}
 @if(count($terrains) > 0)
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
@@ -226,7 +221,6 @@
                             {{ substr($terrain->opening_time, 11, 5) }} – {{ substr($terrain->closing_time, 11, 5) }}
                         </div>
 
-                        {{-- Reserve button (client only) --}}
                         @if(auth()->user()->role !== 'manager')
                             <a href="/reservations/create/{{ $terrain->id }}"
                                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold rounded-xl transition-all duration-150 shadow-sm">
@@ -243,7 +237,6 @@
         @endforeach
     </div>
 
-{{-- ══ EMPTY STATE ════════════════════════════════════════ --}}
 @else
     <div class="flex flex-col items-center justify-center py-24 text-center bg-white rounded-2xl border border-slate-100 shadow-sm mb-8">
         <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
@@ -257,7 +250,6 @@
     </div>
 @endif
 
-{{-- ══ MAP ═════════════════════════════════════════════════ --}}
 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
     <div class="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
         <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center">

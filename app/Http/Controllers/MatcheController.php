@@ -33,7 +33,7 @@ class MatcheController extends Controller
     public function create(Reservation $reservation)
     {
         $reservations = Reservation::with('terrain')->findOrFail($reservation->id);
-        // sécurité
+
         if ($reservation->user_id != Auth::id()) {
             abort(403);
         }
@@ -95,10 +95,8 @@ class MatcheController extends Controller
 
         $user = Auth::user();
 
-        // واش هاد المستخدم هو creator
         $isCreator = $user->id == $match->creator_id;
 
-        // المشاركة ديال user فهاد match
         $participation = null;
 
         if (!$isCreator) {
@@ -107,7 +105,6 @@ class MatcheController extends Controller
                 ->first();
         }
 
-        // عدد اللاعبين المقبولين
         $acceptedCount = MatchParticipant::where('match_id', $match->id)
             ->where('status', 'accepted')
             ->count();

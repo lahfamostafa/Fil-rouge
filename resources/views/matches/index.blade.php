@@ -1,4 +1,3 @@
-{{-- resources/views/matches/index.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -15,7 +14,6 @@
     <div class="py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {{-- Flash Messages --}}
             @if (session('success'))
                 <div
                     class="mb-6 flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl shadow-sm">
@@ -40,7 +38,6 @@
                 </div>
             @endif
 
-            {{-- Match Grid --}}
             @if ($matches->isEmpty())
                 <div class="text-center py-24">
                     <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 mb-6">
@@ -63,7 +60,6 @@
                         <div
                             class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col overflow-hidden">
 
-                            {{-- Card Header --}}
                             <div
                                 class="bg-gradient-to-r from-green-500 to-emerald-600 px-5 py-4 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
@@ -79,7 +75,6 @@
                                     </span>
                                 </div>
 
-                                {{-- Status Badge --}}
                                 @if ($match->status === 'open')
                                     <span
                                         class="inline-flex items-center gap-1 bg-white/20 text-white text-xs font-bold px-2.5 py-1 rounded-full">
@@ -98,10 +93,8 @@
                                 @endif
                             </div>
 
-                            {{-- Card Body --}}
                             <div class="p-5 flex flex-col flex-1 gap-4">
 
-                                {{-- Creator --}}
                                 <div class="flex items-center gap-2.5">
                                     <div
                                         class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs flex-shrink-0">
@@ -114,7 +107,6 @@
                                     </div>
                                 </div>
 
-                                {{-- Match Date & Time --}}
                                 <div class="flex items-center gap-2 text-sm text-gray-500">
                                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -126,7 +118,6 @@
                                     {{ substr($match->reservation->start_time, 11, 5) ?? '--:--' }}
                                 </div>
 
-                                {{-- Players Progress --}}
                                 <div>
                                     <div class="flex justify-between text-xs text-gray-500 mb-1.5">
                                         <span>Players</span>
@@ -153,7 +144,6 @@
                                     </div>
                                 </div>
 
-                                {{-- Actions --}}
                                 <div class="flex gap-2 mt-auto pt-2">
 
                                     <a href="{{ route('matches.show', $match) }}"
@@ -161,42 +151,36 @@
                                         View
                                     </a>
 
-                                    {{-- Creator --}}
                                     @if ($isMine)
                                         <span
                                             class="flex-1 text-center text-sm font-semibold text-blue-500 bg-blue-50 border border-blue-200 px-3 py-2 rounded-lg">
                                             Your Match
                                         </span>
 
-                                        {{-- Accepted --}}
                                     @elseif($status === 'accepted')
                                         <span
                                             class="flex-1 text-center text-sm font-semibold text-green-400 bg-gray-50 border border-green-200 px-3 py-2 rounded-lg">
                                             Joined
                                         </span>
 
-                                        {{-- Pending --}}
                                     @elseif($status === 'pending')
                                         <span
                                             class="flex-1 text-center text-sm font-semibold text-yellow-500 bg-yellow-50 border border-yellow-200 px-3 py-2 rounded-lg">
                                             Pending
                                         </span>
 
-                                        {{-- Rejected --}}
                                     @elseif($status === 'rejected')
                                         <span
                                             class="flex-1 text-center text-sm font-semibold text-red-400 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
                                             Rejected
                                         </span>
 
-                                        {{-- Full --}}
                                     @elseif($isFull)
                                         <span
                                             class="flex-1 text-center text-sm font-semibold text-red-400 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
                                             Full
                                         </span>
 
-                                        {{-- Default: Join --}}
                                     @else
                                         <form action="{{ route('matches.join', $match) }}" method="POST" class="flex-1">
                                             @csrf
@@ -213,7 +197,6 @@
                     @endforeach
                 </div>
 
-                {{-- Pagination --}}
                 <div class="mt-10">
                     {{ $matches->links() }}
                 </div>

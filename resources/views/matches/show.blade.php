@@ -18,7 +18,6 @@
     <div class="py-10">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-            {{-- Flash Messages --}}
             @if(session('success'))
                 <div class="flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl shadow-sm">
                     <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -38,10 +37,8 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {{-- Left Column: Main Info --}}
                 <div class="lg:col-span-2 space-y-6">
 
-                    {{-- Match Header Card --}}
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-5 flex items-center justify-between">
                             <div>
@@ -50,7 +47,6 @@
                                     {{ $match->reservation->terrain->name ?? 'N/A' }}
                                 </h3>
                             </div>
-                            {{-- Status Badge --}}
                             @php
                                 $statusConfig = [
                                     'open'   => ['bg-white/20 text-white', 'bg-green-200', 'Open'],
@@ -66,7 +62,6 @@
                         </div>
 
                         <div class="p-6 space-y-4">
-                            {{-- Date / Time --}}
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="bg-gray-50 rounded-xl p-3">
                                     <p class="text-xs text-gray-400 mb-1">Date</p>
@@ -82,7 +77,6 @@
                                 </div>
                             </div>
 
-                            {{-- Players --}}
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
                                     <span class="text-gray-500">Accepted Players</span>
@@ -99,7 +93,6 @@
                                 </div>
                             </div>
 
-                            {{-- Description --}}
                             @if($match->description)
                                 <div class="border-t border-gray-100 pt-4">
                                     <p class="text-xs text-gray-400 mb-1.5">Description</p>
@@ -109,7 +102,6 @@
                         </div>
                     </div>
 
-                    {{-- Participants List --}}
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                             <h4 class="font-semibold text-gray-800">Participants</h4>
@@ -150,17 +142,15 @@
 
                 </div>
 
-                {{-- Right Column: Actions & Creator --}}
                 <div class="space-y-6">
 
                     @if(auth()->id() === $match->creator_id)
-    <a href="{{ route('announcements.create', $match) }}"
-       class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm">
-        + creer annonce
-    </a>
-@endif
+                        <a href="{{ route('announcements.create', $match) }}"
+                        class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm">
+                            + creer annonce
+                        </a>
+                    @endif
 
-                    {{-- Creator Card --}}
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                         <p class="text-xs text-gray-400 uppercase tracking-wider mb-3">Created by</p>
                         <div class="flex items-center gap-3">
@@ -174,12 +164,10 @@
                         </div>
                     </div>
 
-                    {{-- Action Card --}}
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-3">
                         <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Actions</p>
 
                         @if($isCreator)
-                            {{-- Creator: View Requests --}}
                             <a href="{{ route('matches.requests', $match) }}"
                                class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 px-4 rounded-xl transition shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,7 +180,6 @@
                             </div>
 
                         @elseif($participation)
-                            {{-- Already applied --}}
                             @php
                                 $statusConfig = [
                                     'pending'  => ['bg-yellow-50 border-yellow-200 text-yellow-800', '⏳ Your request is pending'],
@@ -205,7 +192,6 @@
                             </div>
 
                         @elseif($match->status === 'open')
-                            {{-- Can join --}}
                             <form action="{{ route('matches.join', $match) }}" method="POST">
                                 @csrf
                                 <button type="submit"

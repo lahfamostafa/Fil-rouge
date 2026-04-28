@@ -77,12 +77,10 @@ class MatchParticipantController extends Controller
             return back()->with('error', 'Match complet');
         }
 
-        // ❌ creator ma yjoinich
         if ($match->creator_id == Auth::id()) {
             return back()->with('error', 'Impossible');
         }
 
-        // ❌ déjà demandé
         $exists = MatchParticipant::where('match_id', $matchId)
             ->where('user_id', Auth::id())
             ->whereIn('status', ['pending', 'accepted'])

@@ -3,12 +3,8 @@
 
 @section('content')
 
-{{-- ============================================================
-     1. STATS CARDS
-============================================================ --}}
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
-    {{-- Total Terrains --}}
     <div class="bg-white rounded-2xl border border-slate-100 p-5 flex items-center gap-4 hover:shadow-md hover:shadow-slate-100 transition-all">
         <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -22,7 +18,6 @@
         </div>
     </div>
 
-    {{-- Total Reservations --}}
     <div class="bg-white rounded-2xl border border-slate-100 p-5 flex items-center gap-4 hover:shadow-md hover:shadow-slate-100 transition-all">
         <div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
             <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -37,7 +32,6 @@
         </div>
     </div>
 
-    {{-- Pending --}}
     <div class="bg-white rounded-2xl border border-amber-100 p-5 flex items-center gap-4 hover:shadow-md hover:shadow-amber-50 transition-all">
         <div class="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
             <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -53,7 +47,6 @@
         </div>
     </div>
 
-    {{-- Revenue --}}
     <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-5 flex items-center gap-4 hover:shadow-md hover:shadow-green-200 transition-all">
         <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -71,9 +64,6 @@
 
 </div>
 
-{{-- ============================================================
-     2. TERRAINS SECTION
-============================================================ --}}
 <div class="mb-8">
 
     <div class="flex items-center justify-between mb-4">
@@ -93,7 +83,6 @@
     @forelse($terrains as $terrain)
     <div class="bg-white rounded-2xl border border-slate-100 p-4 mb-3 flex items-center gap-4 hover:shadow-md hover:shadow-slate-100 transition-all group">
 
-        {{-- Terrain image / icon --}}
         <div class="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0">
             @if($terrain->image)
                 <img src="{{ asset('storage/'.$terrain->image) }}" alt="{{ $terrain->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -107,7 +96,6 @@
             @endif
         </div>
 
-        {{-- Terrain info --}}
         <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
                 <h3 class="font-bold text-slate-800 truncate">{{ $terrain->name }}</h3>
@@ -141,7 +129,6 @@
             </div>
         </div>
 
-        {{-- Actions --}}
         <div class="flex items-center gap-2 shrink-0">
             <a href="/terrains/{{ $terrain->id }}/edit"
                class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-600 transition-colors"
@@ -187,9 +174,6 @@
 
 </div>
 
-{{-- ============================================================
-     3. RESERVATIONS SECTION
-============================================================ --}}
 <div>
 
     <div class="flex items-center justify-between mb-4">
@@ -206,7 +190,6 @@
         </a>
     </div>
 
-    {{-- Pending highlight banner --}}
     @php
         $pendingCount = $terrains->sum(fn($t) => $t->reservations->where('status', 'pending')->count());
     @endphp
@@ -223,14 +206,12 @@
     </div>
     @endif
 
-    {{-- Table (desktop) / Cards (mobile) --}}
     @php
         $allReservations = $terrains->flatMap(fn($t) => $t->reservations)->sortByDesc('created_at');
     @endphp
 
     @if($allReservations->count() > 0)
 
-    {{-- Desktop table --}}
     <div class="hidden md:block bg-white rounded-2xl border border-slate-100 overflow-hidden">
         <table class="w-full text-sm">
             <thead>
@@ -346,13 +327,11 @@
         </table>
     </div>
 
-    {{-- Mobile cards --}}
     <div class="md:hidden space-y-3">
         @foreach($allReservations as $res)
         <div class="bg-white rounded-2xl border p-4 transition-all
             {{ $res->status === 'pending' ? 'border-amber-200 bg-amber-50/30' : 'border-slate-100 hover:shadow-md hover:shadow-slate-100' }}">
 
-            {{-- Header --}}
             <div class="flex items-start justify-between mb-3">
                 <div class="flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center text-xs font-bold text-slate-600 shrink-0">
@@ -378,7 +357,6 @@
                 </span>
             </div>
 
-            {{-- Details --}}
             <div class="flex items-center gap-4 mb-3 text-xs text-slate-500">
                 <span class="flex items-center gap-1">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -395,7 +373,6 @@
                 <span class="font-bold text-green-600 ml-auto">{{ $res->total_price }} DH</span>
             </div>
 
-            {{-- Actions --}}
             @if($res->status === 'pending')
             <div class="flex gap-2 pt-3 border-t border-slate-100">
                 <form action="/manager/reservations/{{ $res->id }}/confirm" method="POST" class="flex-1">
@@ -424,7 +401,6 @@
     </div>
 
     @else
-    {{-- Empty state --}}
     <div class="bg-white rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center">
         <div class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-3">
             <svg class="w-7 h-7 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">

@@ -67,7 +67,7 @@ class TerrainController extends Controller
         $terrain->opening_time = $request->opening_time;
         $terrain->closing_time = $request->closing_time;
         $terrain->image = $imagePath;
-        $terrain->manager_id = Auth::id(); // هنا آمنة
+        $terrain->manager_id = Auth::id(); 
 
         $terrain->save();
 
@@ -89,7 +89,6 @@ class TerrainController extends Controller
     {
         $terrain = Terrain::findOrFail($id);
 
-        // security: غير manager ديال terrain يقدر يعدل
         if ($terrain->manager_id != auth()->id()) {
             abort(403);
         }
